@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>BULLDOZER — Rolland Auda</title>
+  <style>
+    html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#000; }
+    #root { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; }
+    .content { position:relative; z-index:10; color:#fff; padding:2rem;
+               font-family:'Helvetica Neue', sans-serif; text-shadow:0 2px 24px rgba(0,0,0,.65); }
+    h1 { font-size:clamp(48px,10vw,200px); margin:0; letter-spacing:-0.02em; }
+    audio { width:100%; max-width:600px; }
+    a { color:#fff; }
+    .liens { position:fixed; left:2rem; bottom:1rem; margin:0; font-size:14px; }
+
+    /* Panneau de réglage — provisoire, à retirer avant publication */
+    #reglages { position:fixed; right:1rem; bottom:1rem; z-index:20; width:270px; padding:.8rem 1rem;
+                background:rgba(0,0,0,.72); color:#fff; font:12px/1.5 'Helvetica Neue', sans-serif;
+                border-radius:6px; }
+    #reglages label { display:flex; justify-content:space-between; margin-top:.45rem; }
+    #reglages input { width:100%; }
+    #reglages .titre { font-weight:bold; }
+    #reglages .mesure { margin-top:.6rem; opacity:.8; font-variant-numeric:tabular-nums; }
+    #reglages button { width:100%; margin-top:.7rem; padding:.4rem; font:inherit; color:#fff; cursor:pointer;
+                       background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4); border-radius:4px; }
+    #reglages button.actif { background:#fff; color:#000; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <div class="content">
+    <h1>BULLDOZER</h1>
+    <p>Musique : Jean-Baptiste Castanier — Arrangements, mise en son : Rolland Auda – Saxophone : Antoine Castanier</p>
+    <audio id="player" controls src="bulldozer.mp3" crossorigin="anonymous"></audio>
+    <p class="liens"><a href="bulldozer-partition.pdf">Partition</a> · <a href="note-intention.pdf">Note d'intention</a></p>
+  </div>
+
+  <div id="reglages">
+    <div class="titre">Réglages (touche R pour masquer)</div>
+    <label>assombrissement du fond <span id="v-darken"></span></label>
+    <input type="range" id="s-darken" min="0" max="0.7" step="0.01">
+    <label>intensité <span id="v-intensity"></span></label>
+    <input type="range" id="s-intensity" min="0" max="300" step="5">
+    <label>réaction à la musique <span id="v-reaction"></span></label>
+    <input type="range" id="s-reaction" min="0" max="3" step="0.05">
+    <label>inertie de la souris <span id="v-mouseDelay"></span></label>
+    <input type="range" id="s-mouseDelay" min="0.001" max="0.03" step="0.001">
+    <label>vitesse <span id="v-speed"></span></label>
+    <input type="range" id="s-speed" min="0" max="0.3" step="0.005">
+    <label>taille des ondulations <span id="v-size"></span></label>
+    <input type="range" id="s-size" min="100" max="1000" step="10">
+    <div class="mesure" id="mesure">grave : — · distorsion : —</div>
+    <button type="button" id="b-figer">Figer l'image</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.2/pixi.min.js"
+          integrity="sha384-9WS3G5cT96SWNIkXeH4ncD0tfi+xpw9qBfT0A9SQuKtBrVemEhLpGs3QA9pbUt4t" crossorigin="anonymous"></script>
+  <script src="background.js"></script>
+</body>
+</html>
