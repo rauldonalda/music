@@ -12,6 +12,13 @@
   <style>
     /* les couleurs viennent de la vidéo : ses ombres, l'orange de ses traits */
     :root { --clair: #f4ebe4; --trait: #ee6a35; --ombre: #150d09; --voile: 12,6,4; }
+    /* le lieu filmé, en bas à gauche, à l'aplomb du texte */
+    .reference { position: fixed; left: clamp(1.5rem, 7vw, 6rem); bottom: 1.1rem; margin: 0;
+                 font-size: 11px; letter-spacing: .05em; color: var(--clair); opacity: .8; }
+    @media (max-width: 600px) {
+      /* sur téléphone elle vient à la suite des morceaux, pour ne pas passer sous le bouton */
+      .reference { position: static; margin-top: 2.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -37,6 +44,8 @@
       <p class="credits">2006/<wbr>Carcassonne-Quito/<wbr>voix:bruno|peyras/<wbr>sampling:rolland|auda</p>
       <audio controls preload="metadata" src="pas-de-mot-pas-de-sens.mp3"></audio>
     </section>
+
+    <p class="reference">Site mégalithique d'Aoste, Valle d'Aosta</p>
   </main>
 
   <button type="button" id="b-figer">Figer la vidéo</button>
