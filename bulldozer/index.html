@@ -10,24 +10,55 @@
   <style>
     html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#000; }
     #root { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; }
-    .content { position:relative; z-index:10; color:#fff; padding:2rem;
-               font-family:'Helvetica Neue', sans-serif; text-shadow:0 2px 24px rgba(0,0,0,.65); }
-    h1 { font-size:clamp(48px,10vw,200px); margin:0; letter-spacing:-0.02em; }
-    audio { width:100%; max-width:600px; }
-    a { color:#fff; }
+    .content { position:relative; z-index:10; color:#2e2018; padding:2rem;
+               font-family:'Helvetica Neue', sans-serif; text-shadow:0 0 22px rgba(255,255,255,.3); }
+    h1 { font-size:clamp(48px,10vw,200px); margin:0; letter-spacing:-0.02em; color:#4d3828; }
+    a { color:inherit; }
+    /* halo clair : le petit texte brun reste lisible quand il passe sur la fente sombre */
+    .content p { text-shadow:0 0 3px rgba(255,255,255,.6), 0 0 9px rgba(255,255,255,.55), 0 0 18px rgba(255,255,255,.4); }
     .liens { position:fixed; left:2rem; bottom:1rem; margin:0; font-size:14px; }
 
-    /* Panneau de réglage — provisoire, à retirer avant publication */
-    #reglages { position:fixed; right:1rem; bottom:1rem; z-index:20; width:270px; padding:.8rem 1rem;
-                background:rgba(0,0,0,.72); color:#fff; font:12px/1.5 'Helvetica Neue', sans-serif;
-                border-radius:6px; }
-    #reglages label { display:flex; justify-content:space-between; margin-top:.45rem; }
-    #reglages input { width:100%; }
-    #reglages .titre { font-weight:bold; }
-    #reglages .mesure { margin-top:.6rem; opacity:.8; font-variant-numeric:tabular-nums; }
-    #reglages button { width:100%; margin-top:.7rem; padding:.4rem; font:inherit; color:#fff; cursor:pointer;
-                       background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4); border-radius:4px; }
-    #reglages button.actif { background:#fff; color:#000; }
+    /* Réglages : un bouton discret ouvre un petit panneau en verre dépoli, fondu dans l'image */
+    #b-reglages, #reglages, #b-accueil, #lecteur { color:#fff; font:12px/1.5 'Helvetica Neue', sans-serif;
+                             background:rgba(0,0,0,.2); -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px);
+                             border:1px solid rgba(255,255,255,.2); border-radius:6px;
+                             text-shadow:0 1px 3px rgba(0,0,0,.55); }
+    #b-reglages { position:fixed; right:1rem; bottom:1rem; z-index:21; padding:.35rem .75rem; cursor:pointer;
+                  opacity:.7; transition:opacity .2s; }
+    #b-reglages:hover, #b-reglages:focus-visible, #b-reglages[aria-expanded="true"] { opacity:1; }
+    #b-accueil { position:fixed; right:1rem; top:1rem; z-index:21; padding:.35rem .75rem; text-decoration:none;
+                 opacity:.7; transition:opacity .2s; }
+    #b-accueil:hover, #b-accueil:focus-visible { opacity:1; }
+    /* le lecteur : même verre dépoli que les réglages, à la place de la barre du navigateur */
+    #lecteur { display:flex; align-items:center; gap:.75rem; box-sizing:border-box; width:100%; max-width:600px;
+               padding:.4rem .9rem .4rem .5rem; }
+    #b-lecture, #b-son { flex:none; width:30px; height:30px; padding:0; border:0; background:none; color:#fff; cursor:pointer;
+                 display:grid; place-items:center; opacity:.9; }
+    #b-lecture:hover, #b-lecture:focus-visible, #b-son:hover, #b-son:focus-visible { opacity:1; }
+    #b-lecture svg, #b-son svg { width:16px; height:16px; fill:currentColor; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+    #b-son .muet, #b-son.coupe .son { display:none; }
+    #b-son.coupe .muet { display:block; }
+    #s-volume { flex:none; width:70px; margin:0; accent-color:#e6e6e6; opacity:.85; cursor:pointer; }
+    #b-lecture .pause, #b-lecture.en-lecture .lire { display:none; }
+    #b-lecture.en-lecture .pause { display:block; }
+    #t-temps { flex:none; font-variant-numeric:tabular-nums; }
+    #s-position { flex:1; min-width:0; margin:0; accent-color:#e6e6e6; opacity:.85; cursor:pointer; }
+    #reglages { position:fixed; right:1rem; bottom:3.5rem; z-index:20; width:230px; padding:.6rem .9rem .85rem; }
+    #reglages[hidden] { display:none; }
+    #reglages label { display:block; margin-top:.5rem; }
+    #reglages input { width:100%; margin:.15rem 0 0; accent-color:#e6e6e6; opacity:.85; }
+    #reglages button { width:100%; margin-top:.8rem; padding:.4rem; font:inherit; color:#fff; cursor:pointer;
+                       background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.3); border-radius:4px;
+                       text-shadow:inherit; }
+    #reglages button.actif { background:rgba(255,255,255,.85); color:#000; text-shadow:none; }
+    @media (max-width: 600px) {
+      /* sur un téléphone, le panneau prend la largeur et s'ouvre au-dessus des liens */
+      #reglages { left:1rem; right:1rem; width:auto; }
+      /* le titre descend d'un cran pour laisser sa place au bouton Accueil */
+      .content { padding-top:3.6rem; }
+      /* sur téléphone le volume se règle avec les boutons de l'appareil : on ne garde que la coupure du son */
+      #s-volume { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -36,25 +67,32 @@
   <div class="content">
     <h1>BULLDOZER</h1>
     <p>Musique : Jean-Baptiste Castanier — Arrangements, mise en son : Rolland Auda – Saxophone : Antoine Castanier</p>
-    <audio id="player" controls src="bulldozer.mp3" crossorigin="anonymous"></audio>
+    <audio id="player" src="bulldozer.mp3" crossorigin="anonymous" preload="metadata"></audio>
+    <div id="lecteur">
+      <button type="button" id="b-lecture" aria-label="Lire">
+        <svg class="lire" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5v13l11-6.5z"/></svg>
+        <svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5h3.5v13H3zM9.5 1.5H13v13H9.5z"/></svg>
+      </button>
+      <span id="t-temps">0:00 / 0:00</span>
+      <input type="range" id="s-position" min="0" max="1000" step="1" value="0" aria-label="Position dans le morceau">
+      <button type="button" id="b-son" aria-label="Couper le son">
+        <svg class="son" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 6h3L9 2.5v11L4.5 10h-3z"/><path d="M11.2 5.3a3.8 3.8 0 0 1 0 5.4M13 3.4a6.5 6.5 0 0 1 0 9.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <svg class="muet" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 6h3L9 2.5v11L4.5 10h-3z"/><path d="M11.3 6l3.4 4M14.7 6l-3.4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+      <input type="range" id="s-volume" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+    </div>
     <p class="liens"><a href="bulldozer-partition.pdf">Partition</a> · <a href="note-intention.pdf">Note d'intention</a></p>
   </div>
 
-  <div id="reglages">
-    <div class="titre">Réglages (touche R pour masquer)</div>
-    <label>assombrissement du fond <span id="v-darken"></span></label>
+  <a id="b-accueil" href="../">Accueil</a>
+  <button type="button" id="b-reglages" aria-expanded="false" aria-controls="reglages">Réglages</button>
+  <div id="reglages" hidden>
+    <label for="s-darken">Assombrir l'image</label>
     <input type="range" id="s-darken" min="0" max="0.7" step="0.01">
-    <label>intensité <span id="v-intensity"></span></label>
+    <label for="s-intensity">Force de la déformation</label>
     <input type="range" id="s-intensity" min="0" max="300" step="5">
-    <label>réaction à la musique <span id="v-reaction"></span></label>
+    <label for="s-reaction">Réaction à la musique</label>
     <input type="range" id="s-reaction" min="0" max="3" step="0.05">
-    <label>inertie de la souris <span id="v-mouseDelay"></span></label>
-    <input type="range" id="s-mouseDelay" min="0.001" max="0.03" step="0.001">
-    <label>vitesse <span id="v-speed"></span></label>
-    <input type="range" id="s-speed" min="0" max="0.3" step="0.005">
-    <label>taille des ondulations <span id="v-size"></span></label>
-    <input type="range" id="s-size" min="100" max="1000" step="10">
-    <div class="mesure" id="mesure">grave : — · distorsion : —</div>
     <button type="button" id="b-figer">Figer l'image</button>
   </div>
 

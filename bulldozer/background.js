@@ -10,7 +10,7 @@ const options = {
                     speed: 0.05,
                     size: 500,
                     wrapMode: PIXI.WRAP_MODES.REPEAT,
-                    darken: 0.25              // assombrit le fond pour que le texte blanc reste lisible
+                    darken: 0.1               // léger assombrissement : le titre et les crédits sont en brun foncé
                   }
 };
 const dm = options.displacementMap;
@@ -51,6 +51,7 @@ loader.load((_, { bg: bgRes, disp: dispRes }) => {
 
 // --- Analyse audio : la distorsion suit le morceau ---
 let analyser = null, freqData = null, bassBins = 8, audioCtx = null;
+let gainSortie = null, volumeVoulu = 1, sonCoupe = false;   // volume d'écoute, réglé après l'analyse
 const player = document.getElementById("player");
 
 player.addEventListener("play", () => {
@@ -61,8 +62,11 @@ player.addEventListener("play", () => {
   analyser.fftSize = 2048;
   analyser.smoothingTimeConstant = 0.6;
   analyser.minDecibels = -75; analyser.maxDecibels = -15;
+  gainSortie = audioCtx.createGain();
+  gainSortie.gain.value = sonCoupe ? 0 : volumeVoulu;
   src.connect(analyser);
-  analyser.connect(audioCtx.destination);
+  analyser.connect(gainSortie);
+  gainSortie.connect(audioCtx.destination);
   freqData = new Uint8Array(analyser.frequencyBinCount);
   // nombre de bandes couvrant 0-350 Hz : le moteur, le sub et la chute
   bassBins = Math.max(2, Math.round(350 / (audioCtx.sampleRate / analyser.fftSize)));
@@ -87,7 +91,6 @@ let eFast = 0, eSlow = 0, eScale = 0, vx = 0, vy = 0, angle = 0.7, enElan = fals
 let fige = false;   // image figée : plus aucun mouvement, ni souris, ni musique
 const lisse = (f, dt) => 1 - Math.pow(1 - f, dt);   // même inertie quelle que soit la cadence de l'écran
 
-const mesure = document.getElementById("mesure");
 const ticker = new PIXI.ticker.Ticker();
 ticker.add(deltaTime => {
   if (fige) { renderer.render(stage); return; }
@@ -117,8 +120,6 @@ ticker.add(deltaTime => {
   if (filter) {
     const scale = dm.intensity * (0.6 + dm.reaction * 1.6 * Math.pow(eScale, 1.5));
     filter.scale.x = scale; filter.scale.y = scale;
-    if (mesure) mesure.textContent = "grave : " + eScale.toFixed(2) + " · distorsion : " + scale.toFixed(0)
-      + " · glissement : " + Math.hypot(vx, vy).toFixed(1);
   }
   renderer.render(stage);
 });
@@ -130,14 +131,13 @@ window.addEventListener("resize", () => {
   if (bg) coverBg();
 });
 
-// --- Panneau de réglage (provisoire, à retirer avant publication) ---
-[["darken", 2], ["intensity", 0], ["reaction", 2], ["mouseDelay", 3], ["speed", 3], ["size", 0]].forEach(([nom, dec]) => {
-  const curseur = document.getElementById("s-" + nom), valeur = document.getElementById("v-" + nom);
+// --- Réglages offerts au visiteur ---
+[["darken", 2], ["intensity", 0], ["reaction", 2]].forEach(([nom]) => {
+  const curseur = document.getElementById("s-" + nom);
   if (!curseur) return;
-  curseur.value = dm[nom]; valeur.textContent = (+dm[nom]).toFixed(dec);
+  curseur.value = dm[nom];
   curseur.addEventListener("input", () => {
-    dm[nom] = +curseur.value; valeur.textContent = dm[nom].toFixed(dec);
-    if (nom === "size" && dispMap) { dispMap.width = dm.size; dispMap.height = dm.size; }
+    dm[nom] = +curseur.value;
     if (nom === "darken") assombrir();
   });
 });
@@ -147,9 +147,67 @@ if (boutonFiger) boutonFiger.addEventListener("click", () => {
   boutonFiger.classList.toggle("actif", fige);
   boutonFiger.textContent = fige ? "Relancer le mouvement" : "Figer l'image";
 });
+// le panneau est fermé à l'arrivée : le bouton « Réglages » ou la touche R l'ouvre et le referme
+const panneau = document.getElementById("reglages"), boutonReglages = document.getElementById("b-reglages");
+function basculerReglages() {
+  if (!panneau) return;
+  panneau.hidden = !panneau.hidden;
+  if (boutonReglages) boutonReglages.setAttribute("aria-expanded", String(!panneau.hidden));
+}
+if (boutonReglages) boutonReglages.addEventListener("click", basculerReglages);
 window.addEventListener("keydown", e => {
-  if (e.key === "r" || e.key === "R") {
-    const p = document.getElementById("reglages");
-    if (p) p.style.display = p.style.display === "none" ? "" : "none";
+  if (e.key === "r" || e.key === "R") basculerReglages();
+});
+
+// --- Lecteur : une barre aux couleurs de la page, qui pilote l'élément audio ---
+const boutonLecture = document.getElementById("b-lecture"), curseurPosition = document.getElementById("s-position"),
+      affichageTemps = document.getElementById("t-temps");
+const mmss = s => isFinite(s) ? Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0") : "0:00";
+let enGlissement = false;
+function majLecteur() {
+  if (affichageTemps) affichageTemps.textContent = mmss(player.currentTime) + " / " + mmss(player.duration);
+  if (curseurPosition && !enGlissement && player.duration)
+    curseurPosition.value = Math.round(1000 * player.currentTime / player.duration);
+}
+if (boutonLecture) {
+  boutonLecture.addEventListener("click", () => { if (player.paused) player.play(); else player.pause(); });
+  const majBouton = () => {
+    boutonLecture.classList.toggle("en-lecture", !player.paused);
+    boutonLecture.setAttribute("aria-label", player.paused ? "Lire" : "Pause");
+  };
+  ["play", "pause", "ended"].forEach(ev => player.addEventListener(ev, majBouton));
+}
+["timeupdate", "loadedmetadata", "durationchange"].forEach(ev => player.addEventListener(ev, majLecteur));
+if (curseurPosition) {
+  // pendant qu'on tire le curseur, l'heure suit le doigt ; le morceau ne saute qu'au lâcher
+  curseurPosition.addEventListener("input", () => {
+    enGlissement = true;
+    if (affichageTemps && player.duration)
+      affichageTemps.textContent = mmss(player.duration * curseurPosition.value / 1000) + " / " + mmss(player.duration);
+  });
+  curseurPosition.addEventListener("change", () => {
+    if (player.duration) player.currentTime = player.duration * curseurPosition.value / 1000;
+    enGlissement = false;
+  });
+}
+majLecteur();
+
+// volume et coupure du son : ils n'agissent que sur l'écoute, pas sur la réaction du fond
+const boutonSon = document.getElementById("b-son"), curseurVolume = document.getElementById("s-volume");
+function appliquerVolume() {
+  const v = sonCoupe ? 0 : volumeVoulu;
+  if (gainSortie) gainSortie.gain.value = v; else player.volume = v;   // avant la première lecture, le gain n'existe pas encore
+  if (boutonSon) {
+    boutonSon.classList.toggle("coupe", v === 0);
+    boutonSon.setAttribute("aria-label", v === 0 ? "Remettre le son" : "Couper le son");
   }
+}
+player.addEventListener("play", () => { player.volume = 1; appliquerVolume(); });
+if (boutonSon) boutonSon.addEventListener("click", () => {
+  if (!sonCoupe && volumeVoulu === 0) { volumeVoulu = 1; if (curseurVolume) curseurVolume.value = 1; }
+  else sonCoupe = !sonCoupe;
+  appliquerVolume();
+});
+if (curseurVolume) curseurVolume.addEventListener("input", () => {
+  volumeVoulu = +curseurVolume.value; sonCoupe = false; appliquerVolume();
 });

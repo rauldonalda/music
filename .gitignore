@@ -1,0 +1,4 @@
+# Fichiers de travail, à ne pas publier
+_notes/
+*.code-workspace
+.DS_Store
