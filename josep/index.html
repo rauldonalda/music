@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" class="sur-image">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Josep — Rolland Auda</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../sections.css">
+  <link rel="preload" as="image" href="roue.jpg">
+  <style>
+    /* les couleurs viennent de la vidéo : ses ombres, l'orange de ses traits */
+    :root { --clair: #f4ebe4; --trait: #ee6a35; --ombre: #150d09; --voile: 12,6,4; }
+  </style>
+</head>
+<body>
+  <video id="fond" autoplay muted loop playsinline preload="auto" poster="roue.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture>
+    <source src="roue.mp4" type="video/mp4">
+  </video>
+
+  <main>
+    <p class="retour"><a href="../">‹ Accueil</a></p>
+    <header>
+      <h1>Josep</h1>
+      <p class="sous">Bruno «&nbsp;Josep&nbsp;» Peyras, poète</p>
+    </header>
+
+    <section class="morceau" id="lou-rei-del-moulins">
+      <h2><span class="num">01</span><span class="titre">Lou Rei Del Moulins</span><span class="points"></span><span class="duree">3:57</span></h2>
+      <p class="credits">2006/<wbr>Carcassonne-Quito/<wbr>voix:bruno|peyras/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="lou-rei-del-moulins.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="mots-pas-de-sens">
+      <h2><span class="num">02</span><span class="titre">Mots Pas de Sens</span><span class="points"></span><span class="duree">7:24</span></h2>
+      <p class="credits">2006/<wbr>Carcassonne-Quito/<wbr>voix:bruno|peyras/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="pas-de-mot-pas-de-sens.mp3"></audio>
+    </section>
+  </main>
+
+  <button type="button" id="b-figer">Figer la vidéo</button>
+
+  <script src="../lecteurs.js"></script>
+  <script>
+    // la vidéo de fond : un bouton la fige, et elle reste immobile si le visiteur a demandé moins d'animations
+    const fond = document.getElementById("fond"), boutonFiger = document.getElementById("b-figer");
+    const majFiger = () => { boutonFiger.textContent = fond.paused ? "Relancer la vidéo" : "Figer la vidéo"; };
+    boutonFiger.addEventListener("click", () => { if (fond.paused) fond.play(); else fond.pause(); });
+    ["play", "pause"].forEach(ev => fond.addEventListener(ev, majFiger));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) fond.pause();
+    majFiger();
+  </script>
+</body>
+</html>

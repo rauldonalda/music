@@ -34,21 +34,15 @@
          text-transform: uppercase; margin: 0; line-height: 1.15; }
     .sous { margin: .9rem 0 0; letter-spacing: .28em; text-transform: uppercase; color: #333; }
 
-    h2 { font-size: 1em; font-weight: normal; text-transform: uppercase; letter-spacing: .22em;
-         margin: 3.2rem 0 .4rem; padding-bottom: .4rem; border-bottom: 1px solid #111; }
-    h2 .num { display: inline-block; width: 2.6em; letter-spacing: 0; color: #777; }
-
-    ol { list-style: none; margin: 0; padding: 0; }
+    ol { list-style: none; margin: 2.2rem 0 0; padding: 0; }
     li a { display: flex; align-items: baseline; gap: .8em; padding: .7rem .4rem; margin: 0 -.4rem;
            color: inherit; text-decoration: none; }
     .titre { text-transform: uppercase; letter-spacing: .14em; }
     .points { flex: 1; border-bottom: 1px dotted #999; transform: translateY(-.3em); }
-    .duree { color: #777; }
+    .duree { flex: none; color: #777; white-space: nowrap; }
     li a:hover, li a:focus-visible { background: #111; color: #fff; outline: none; text-shadow: none; }
     li a:hover .duree, li a:focus-visible .duree { color: #ccc; }
     li a:hover .points, li a:focus-visible .points { border-color: #777; }
-
-    li.avenir { display: flex; align-items: baseline; gap: .8em; padding: .7rem 0; color: #777; }
   </style>
 </head>
 <body>
@@ -159,10 +153,12 @@
       <p class="sous">Sonothèque</p>
     </header>
 
-    <h2><span class="num">01</span>Sommaire</h2>
     <ol>
       <li><a href="bulldozer/"><span class="titre">Bulldozer</span><span class="points"></span><span class="duree">3:32</span></a></li>
-      <li class="avenir"><span class="titre">À venir</span><span class="points"></span><span class="duree">…</span></li>
+      <li><a href="josep/"><span class="titre">Josep</span><span class="points"></span><span class="duree">2 titres</span></a></li>
+      <li><a href="barbie-express/"><span class="titre">Barbie Express</span><span class="points"></span><span class="duree">2 titres</span></a></li>
+      <li><a href="les-marchands-de-casseroles/"><span class="titre">Les Marchands de Casseroles</span><span class="points"></span><span class="duree">7 titres</span></a></li>
+      <li><a href="varia/"><span class="titre">Varia</span><span class="points"></span><span class="duree">4 titres</span></a></li>
     </ol>
   </main>
 </body>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Marchands de Casseroles — Rolland Auda</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../sections.css">
+  <link rel="preload" as="image" href="gavarni.jpg">
+  <style>
+    /* Les Marchands de Casseroles : la gravure tient la gauche de la page sur toute sa hauteur et y reste
+       pendant que le texte défile à droite */
+    body { display: flex; align-items: flex-start; font-size: 14px; }
+    #gravure { position: sticky; top: 0; flex: 1 1 0; min-width: 0; height: 100vh; margin: 0; }
+    #gravure img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    #gravure canvas { position: absolute; }   /* le dessin animé se pose exactement sur l'image fixe */
+    #gravure figcaption { position: absolute; z-index: 1; left: 1.2rem; bottom: 3.3rem; font-size: 11px; color: #777; }
+    #b-figer { right: auto; left: 1rem; }
+    main { flex: 0 1 37rem; min-width: 0; max-width: 37rem; margin: 0 clamp(0rem, 5vw, 5rem) 0 0;
+           padding-top: clamp(1rem, 4vh, 2.5rem); padding-bottom: 3rem; }
+    .retour { margin-bottom: 1.2rem; }
+    h1 { font-size: clamp(1.25rem, 3.4vw, 1.9rem); letter-spacing: .26em; }
+    header { padding-bottom: .8rem; }
+    .texte { margin-top: 1.8rem; }
+    .texte p { margin: .9rem 0 0; }
+    .presse { list-style: none; margin: .5rem 0 0; padding: 0 0 0 1.2rem; border-left: 1px solid #111; font-size: 13px; }
+    .presse li { margin-top: .45rem; }
+    .presse .source { color: #777; white-space: nowrap; }
+    .enregistrement { margin: 2.2rem 0 0; padding-top: .9rem; border-top: 1px solid #111; font-size: 12px; color: #555; }
+    .morceau { margin-top: 1.5rem; }
+    .lecteur { margin-top: .5rem; padding: .2rem .8rem .2rem .3rem; font-size: 12px; }
+    .lecteur button { width: 1.8rem; height: 1.8rem; }
+    @media (max-width: 760px) {
+      /* sur écran étroit la gravure passe au-dessus du texte */
+      body { display: block; }
+      #gravure { position: relative; height: auto; }
+      #gravure img { height: auto; max-height: 70vh; }
+      #gravure figcaption { position: static; padding: 0 1.5rem; }
+      #b-figer { left: auto; right: 1rem; }
+      main { max-width: none; margin: 0; padding-bottom: 5rem; }
+    }
+  </style>
+</head>
+<body>
+  <figure id="gravure">
+    <img src="gavarni.jpg" alt="Un marchand ambulant en haut-de-forme, chargé de casseroles">
+    <figcaption>Paul Gavarni, 19<sup>e</sup> siècle, lithographie sur papier</figcaption>
+  </figure>
+
+  <main>
+    <p class="retour"><a href="../">‹ Accueil</a></p>
+    <header>
+      <h1>Les Marchands de Casseroles</h1>
+    </header>
+
+    <section class="morceau" id="un">
+      <h2><span class="num">01</span><span class="titre">Un</span><span class="points"></span><span class="duree">7:58</span></h2>
+      <audio controls preload="metadata" src="piste-01.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="deux">
+      <h2><span class="num">02</span><span class="titre">Deux</span><span class="points"></span><span class="duree">10:21</span></h2>
+      <audio controls preload="metadata" src="piste-02.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="trois">
+      <h2><span class="num">03</span><span class="titre">Trois</span><span class="points"></span><span class="duree">11:37</span></h2>
+      <audio controls preload="metadata" src="piste-03.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="quatre">
+      <h2><span class="num">04</span><span class="titre">Quatre</span><span class="points"></span><span class="duree">6:55</span></h2>
+      <audio controls preload="metadata" src="piste-04.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="cinq">
+      <h2><span class="num">05</span><span class="titre">Cinq</span><span class="points"></span><span class="duree">3:07</span></h2>
+      <audio controls preload="metadata" src="piste-05.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="six">
+      <h2><span class="num">06</span><span class="titre">Six</span><span class="points"></span><span class="duree">9:45</span></h2>
+      <audio controls preload="metadata" src="piste-06.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="sept">
+      <h2><span class="num">07</span><span class="titre">Sept</span><span class="points"></span><span class="duree">9:00</span></h2>
+      <audio controls preload="metadata" src="piste-07.mp3"></audio>
+    </section>
+
+    <p class="enregistrement">Enregistré dans les studios de Radio Divergence, Montpellier, par Dominique Aussenac, 1995</p>
+
+    <div class="texte">
+      <p><em>Les Marchands de Casseroles</em> ont écumé les routes d'Occitanie en 1995, ni plus tôt, ni plus tard. Pas besoin d'effets sonores, ni de techniques ultramodernes pour passer son message. Josep, fébrile félibre scanteur mi-oc, mi-franc, jette ses mots comme on conduit la nuit tous phares éteints. Accompagné de deux percussionnistes aussi antinomiques que complémentaires, Josep pleure et rit comme il parle.</p>
+      <p>Rolland, stoïcien du quotidien, batteur laconique, soutient, avec Diallo percutant Djembé et congas, les phrasés peyrasiens. Amritha vient modérer cette fougue revendicatrice, sans la compromettre pourtant, par la douceur de sa voix et de ses mouvements. Cette rencontre, insolite, forme un quatuor convergent vers un seul et unique point&nbsp;: «&nbsp;la liberté pour chaque être d'être. Tout simplement&nbsp;» (dixit l'autre).</p>
+      <p>La presse de l'époque a ainsi salué les troubadours en inox&nbsp;:</p>
+      <ul class="presse">
+        <li>«&nbsp;Inouï, fabuleux, incroyablement magistral&nbsp;!&nbsp;» <span class="source">(Les dernières nouvelles d'Alsace)</span></li>
+        <li>«&nbsp;Il n'y a pas plus d'art dans Les marchands de casseroles qu'il n'y a de grâce dans le port de cou de Jacky Sardou&nbsp;» <span class="source">(L'Express)</span></li>
+        <li>«&nbsp;Penser à acheter du venin&nbsp;!&nbsp;» <span class="source">(BHL)</span></li>
+        <li>«&nbsp;Sans rancune, qu'ils vivent leur vie. Moi, j'ai la mienne.&nbsp;» <span class="source">(PPDA)</span></li>
+        <li>«&nbsp;Rêve ou cauchemar, le monde de Josep n'est en tout cas jamais vide&nbsp;» <span class="source">(Le Figaro)</span></li>
+      </ul>
+    </div>
+  </main>
+
+  <button type="button" id="b-figer">Figer le fond</button>
+
+  <script src="../lecteurs.js"></script>
+  <script src="../bulldozer/pixi.min.js"></script>
+  <script src="gravure.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* Pages de section : la police et les filets de l'accueil, un lecteur par morceau */
+@font-face {
+  font-family: "PT Mono"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("fonts/pt-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "PT Mono"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("fonts/pt-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+1E00-1E9F, U+1EF2-1EFF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+html, body { margin: 0; min-height: 100%; background: #fff; color: #111; }
+body { font-family: "PT Mono", "Courier New", monospace; font-size: 15px; line-height: 1.6; }
+main { max-width: 46rem; margin: 0 auto; padding: clamp(1.5rem, 7vh, 4rem) 1.5rem 4rem; }
+a { color: inherit; }
+
+.retour { margin: 0 0 clamp(1.5rem, 5vh, 3rem); font-size: 13px; letter-spacing: .22em; text-transform: uppercase; }
+.retour a { display: inline-block; padding: .3rem .4rem; margin-left: -.4rem; color: #777; text-decoration: none; }
+.retour a:hover, .retour a:focus-visible, .intro a:hover, .intro a:focus-visible { background: #111; color: #fff; outline: none; }
+
+header { border-bottom: 2px solid #111; padding-bottom: 1.1rem; }
+h1 { font-size: clamp(1.5rem, 6vw, 3.3rem); font-weight: normal; letter-spacing: .3em;
+     text-transform: uppercase; margin: 0; line-height: 1.15; }
+.sous { margin: .9rem 0 0; letter-spacing: .28em; text-transform: uppercase; color: #333; }
+.intro { margin: 1.3rem 0 0; color: #333; }
+.intro a { padding: .1rem .25rem; white-space: nowrap; }
+
+.morceau { margin-top: 3.2rem; scroll-margin-top: 1.5rem; }
+.morceau h2 { display: flex; align-items: baseline; gap: .8em; font-size: 1em; font-weight: normal; margin: 0; }
+.num { flex: none; width: 1.8em; color: #777; }
+.titre { text-transform: uppercase; letter-spacing: .14em; }
+.points { flex: 1; min-width: 1em; border-bottom: 1px dotted #999; transform: translateY(-.3em); }
+.duree { color: #777; }
+.credits { margin: .35rem 0 0; font-size: 13px; color: #555; overflow-wrap: anywhere; }
+/* le morceau visé depuis le sommaire de l'accueil */
+.morceau:target .titre { background: #111; color: #fff; padding: 0 .45em; }
+
+/* sans script, le lecteur du navigateur ; sinon lecteurs.js le remplace par la barre ci-dessous */
+.morceau audio[controls] { display: block; width: 100%; margin-top: .8rem; }
+.lecteur { display: flex; align-items: center; gap: .8em; margin-top: .8rem; padding: .35rem .8rem .35rem .35rem;
+           border: 1px solid #111; font-size: 13px; }
+.lecteur button { flex: none; width: 2rem; height: 2rem; padding: 0; border: 0; background: none; color: #111;
+                  cursor: pointer; display: grid; place-items: center; }
+.lecteur button:hover, .lecteur button:focus-visible { background: #111; color: #fff; outline: none; }
+.lecteur svg { width: 14px; height: 14px; fill: currentColor; }
+.lecteur .pause, .lecteur.en-lecture .lire, .lecteur .muet, .lecteur .b-son.coupe .son { display: none; }
+.lecteur.en-lecture .pause, .lecteur .b-son.coupe .muet { display: block; }
+.temps { flex: none; }
+.position { flex: 1; min-width: 0; margin: 0; accent-color: #111; cursor: pointer; }
+.volume { flex: none; width: 70px; margin: 0; accent-color: #111; cursor: pointer; }
+/* bouton discret, en bas à droite, pour arrêter un fond animé */
+#b-figer { position: fixed; right: 1rem; bottom: 1rem; z-index: 3; padding: .4rem .75rem; cursor: pointer;
+           font: 12px/1.5 "PT Mono", "Courier New", monospace; letter-spacing: .12em; text-transform: uppercase;
+           color: #111; background: #fff; border: 1px solid #111; opacity: .7; transition: opacity .2s; }
+#b-figer:hover, #b-figer:focus-visible { opacity: 1; outline: none; }
+
+/* Pages posées sur une image ou une vidéo (classe sur-image sur <html>) : texte clair à gauche, lecteurs en
+   verre fumé. Chaque page règle ses couleurs : --clair (texte), --trait (accent), --ombre (fond d'attente)
+   et --voile (teinte du voile sombre, en trois nombres). */
+.sur-image, .sur-image body { background: var(--ombre); color: var(--clair); }
+.sur-image #fond { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+/* un voile sombre, plus dense du côté du texte */
+.sur-image body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+                          background: linear-gradient(100deg, rgba(var(--voile), .66) 0%, rgba(var(--voile), .42) 45%, rgba(var(--voile), .1) 100%); }
+.sur-image main { position: relative; z-index: 2; margin: 0; max-width: 38rem;
+                  padding-left: clamp(1.5rem, 7vw, 6rem); text-shadow: 0 1px 4px rgba(0,0,0,.75); }
+/* variante : le texte à droite, quand le sujet de l'image est à gauche */
+.sur-image.texte-a-droite body::before { background: linear-gradient(260deg, rgba(var(--voile), .7) 0%, rgba(var(--voile), .45) 42%, rgba(var(--voile), .05) 100%); }
+.sur-image.texte-a-droite main { margin-left: auto; padding-left: 1.5rem; padding-right: clamp(1.5rem, 7vw, 6rem); }
+.sur-image header { border-bottom-color: var(--trait); }
+.sur-image .sous, .sur-image .intro { color: var(--clair); }
+.sur-image .retour a { color: var(--clair); opacity: .75; }
+.sur-image .retour a:hover, .sur-image .retour a:focus-visible,
+.sur-image .intro a:hover, .sur-image .intro a:focus-visible { background: var(--trait); color: var(--ombre); opacity: 1; text-shadow: none; }
+.sur-image .num, .sur-image .duree { color: var(--clair); opacity: .65; }
+.sur-image .points { border-bottom-color: var(--clair); opacity: .4; }
+.sur-image .credits { color: var(--clair); opacity: .85; }
+.sur-image .morceau:target .titre { background: var(--trait); color: var(--ombre); text-shadow: none; }
+.sur-image .lecteur, .sur-image #b-figer { background: rgba(var(--voile), .38); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+                                           border: 1px solid rgba(255,255,255,.26); color: var(--clair); }
+.sur-image .lecteur button { color: var(--clair); }
+.sur-image .lecteur button:hover, .sur-image .lecteur button:focus-visible { background: var(--trait); color: var(--ombre); }
+.sur-image .position, .sur-image .volume { accent-color: var(--trait); }
+
+@media (max-width: 600px) {
+  /* sur téléphone le texte occupe toute la largeur : le voile est uniforme */
+  .sur-image body::before, .sur-image.texte-a-droite body::before { background: rgba(var(--voile), .5); }
+  .sur-image main { padding-bottom: 5rem; }
+  /* sur téléphone le volume se règle avec les boutons de l'appareil : on ne garde que la coupure du son */
+  .volume { display: none; }
+}

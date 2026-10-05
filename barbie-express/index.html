@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" class="sur-image texte-a-droite">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbie Express — Rolland Auda</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../sections.css">
+  <link rel="preload" as="image" href="fond.jpg">
+  <style>
+    /* les couleurs viennent de la photo : ses ombres, le rose de la veste */
+    :root { --clair: #f5efec; --trait: #eaa9a3; --ombre: #0f0c08; --voile: 9,8,11; }
+    /* la photo animée se pose exactement sur la photo fixe */
+    #onde { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+    #onde canvas { display: block; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <img id="fond" src="fond.jpg" alt="">
+  <div id="onde"></div>
+
+  <main>
+    <p class="retour"><a href="../">‹ Accueil</a></p>
+    <header>
+      <h1>Barbie Express</h1>
+      <p class="sous">Album Quito Pluto</p>
+    </header>
+    <p class="intro">Écouter l'album&nbsp;: <a href="https://open.spotify.com/album/57dILlWS3q8SZl5zgxLEXC" target="_blank" rel="noopener">Spotify</a> · <a href="https://music.youtube.com/playlist?list=OLAK5uy_lRlVuEHi6JdZ1Yi-mTGB8bHit8VH9gEM8" target="_blank" rel="noopener">YouTube Music</a> · <a href="https://www.deezer.com/album/585316732" target="_blank" rel="noopener">Deezer</a></p>
+
+    <section class="morceau" id="sueno-tropical">
+      <h2><span class="num">01</span><span class="titre">Sueño Tropical</span><span class="points"></span><span class="duree">5:35</span></h2>
+      <p class="credits">2006 — Musique&nbsp;: Sven Pagot et David Bonilla — Paroles (batterie, chœurs)&nbsp;: Rolland Auda</p>
+      <audio controls preload="metadata" src="sueno-tropical.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="reve-tropical">
+      <h2><span class="num">02</span><span class="titre">Rêve tropical</span><span class="points"></span><span class="duree">2:26</span></h2>
+      <p class="credits">2018, Josep, Carcassonne</p>
+      <audio controls preload="metadata" src="reve-tropical.mp3"></audio>
+    </section>
+  </main>
+
+  <button type="button" id="b-figer">Figer l'image</button>
+
+  <script src="../lecteurs.js"></script>
+  <script src="../bulldozer/pixi.min.js"></script>
+  <script src="fond.js"></script>
+</body>
+</html>

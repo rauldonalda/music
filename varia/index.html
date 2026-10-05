@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Varia — Rolland Auda</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../sections.css">
+  <style>
+    /* Varia : un portrait en caractères occupe la droite de la page, sur toute sa hauteur
+       (28 lignes de 57 signes ; la taille des signes se règle sur la hauteur de la fenêtre) */
+    #trame { position: fixed; top: 0; right: 0; z-index: 0; margin: 0; overflow: hidden; pointer-events: none;
+             -webkit-user-select: none; user-select: none; white-space: pre; color: #c2c2c2;
+             font-family: "PT Mono", "Courier New", monospace; font-size: calc(100vh / 33.9); line-height: 1.21; }
+    main { position: relative; z-index: 1; margin: 0; max-width: 34rem; padding-left: clamp(1.5rem, 7vw, 6rem);
+           text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 9px #fff; }   /* halo blanc : le texte reste lisible sur les signes */
+    .lecteur { background: rgba(255,255,255,.88); text-shadow: none; }
+    /* quatre morceaux : la page est resserrée pour tenir sur un écran sans défiler */
+    body { font-size: 14px; }
+    main { padding-top: clamp(1rem, 4vh, 2.5rem); padding-bottom: 2rem; }
+    .retour { margin-bottom: 1.2rem; }
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.7rem); }
+    .sous { margin-top: .6rem; }
+    header { padding-bottom: .8rem; }
+    .morceau { margin-top: 2rem; }
+    .credits { margin-top: .2rem; font-size: 12px; }
+    .lecteur { margin-top: .5rem; padding: .2rem .8rem .2rem .3rem; font-size: 12px; }
+    .lecteur button { width: 1.8rem; height: 1.8rem; }
+    @media (max-width: 760px) {
+      /* sur écran étroit le portrait passe derrière le texte, centré et plus pâle */
+      #trame { right: 50%; transform: translateX(50%); color: #dedede; }
+      main { padding-bottom: 5rem; }
+    }
+  </style>
+</head>
+<body>
+  <pre id="trame" aria-hidden="true">~~~:~``~~:````~~~~:**i~~::**:::::```       `~`````       
+:~~~~``~:~`~~::~:~~VOiVViVVOVOVOVVVVii::~~~~``````       
+~~:~```~:~``~~`~*VVOVOEOOOOEOOOOVViiVOi*:~~~``````       
+~:::```~:~:~:~~~iVVEEEEMEOOOVVVVVVOVVVVi*:~```````       
+``````~~:~~~`::VOOEEEEOOOVVVVVi*iiiiiV*i**:`~`````       
+``````~:::~~iiVEMEOi***::::::::~~````:iVV:*:~:~~~`       
+``````~:~~`~~VOEOi*::::::~~~~~~~~`     :iV:~~~~~~`       
+``````~:::::*VOOV*::::::~~~~~~~```      :***:~~`~`       
+````````````VVOVi*:::::~~~``~~~````     `:::~``~         
+````````````VOOO**::::::~~~~~~`````      ::~`            
+````````````VVOV:::iViii**i:~~***i*:~`   ~::             
+````````````*VO*i*iiiiViiVi:~`:::**:~``~``~~`            
+`````````````VV*V**i***iiOV*:~****:~`  `*~*              
+````````````:iVi:*iiiiiVVOi:``:::*::~`` **i              
+````````````*:V:******ii*i:~` ~``~~~`` ~` ~              
+````````````::::::*iVVi***:~~  ``*::::    ~              
+`````````````**::::::::*:*::~`  ~`                       
+```````````` :i:::::::**iVV*~~``~~`      `               
+```````````` `i**::::**iiViV**:~```     `                
+`````````    `***:::iVVVOiiii:*::~``                     
+``````````  ` `****iVVVVVii**::~*:~`   ``                
+``````````   `:ii*iVOi***ii*:~```:*~`  ~`                
+````~:::***i**iiiiiOi*i*iVVi**~```::```~`  `             
+::::*******iiii*iVVVVViiiiVi:~~`~~:~~~~`  `~::```        
+*****iiiiiiiiii*iVVVVVi*iii**~`~:~:~:~`~``~`::::`~` `    
+iii*****iiiVVii*iiVOOVViiiO*:::~:**~~  ~` ~~:::::~:~`~   
+*****i***iiiiii**iEVOOVVVOVV*:~~::~~:  : ``~~:::::`~~~~` 
+******i***iiiiii*iMOVVViV*ii::~::~~i  `*```~:~~:::~`~:::`</pre>
+
+  <main>
+    <p class="retour"><a href="../">‹ Accueil</a></p>
+    <header>
+      <h1>Varia</h1>
+      <p class="sous">Sampling et boucles</p>
+    </header>
+
+    <section class="morceau" id="ode-a-marx">
+      <h2><span class="num">01</span><span class="titre">Ode à Marx</span><span class="points"></span><span class="duree">1:44</span></h2>
+      <p class="credits">2000/<wbr>Grenoble/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="ode-a-marx.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="ode-a-kouchner">
+      <h2><span class="num">02</span><span class="titre">Ode à Kouchner</span><span class="points"></span><span class="duree">2:00</span></h2>
+      <p class="credits">2000/<wbr>Grenoble/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="ode-a-kouchner.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="ode-au-nain-de-jardin">
+      <h2><span class="num">03</span><span class="titre">Ode au nain de jardin</span><span class="points"></span><span class="duree">0:53</span></h2>
+      <p class="credits">2000/<wbr>Grenoble/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="ode-au-nain-de-jardin.mp3"></audio>
+    </section>
+
+    <section class="morceau" id="apok">
+      <h2><span class="num">04</span><span class="titre">Apok</span><span class="points"></span><span class="duree">5:10</span></h2>
+      <p class="credits">2005/<wbr>Quito/<wbr>voix:diego|cazar/<wbr>sampling:rolland|auda</p>
+      <audio controls preload="metadata" src="apok.mp3"></audio>
+    </section>
+  </main>
+
+  <button type="button" id="b-figer">Figer le fond</button>
+
+  <script src="../lecteurs.js"></script>
+  <script>
+    // Le portrait est fait de dix signes, du plus clair au plus dense. Une tête de lecture le parcourt en boucle,
+    // de gauche à droite : sur son passage les signes s'épaississent, et quelques-uns tremblent au hasard.
+    // Elle va deux fois plus vite pendant qu'un morceau joue.
+    const RAMPE = " `~:*iVOEM";
+    const trame = document.getElementById("trame"), boutonFiger = document.getElementById("b-figer");
+    const modele = trame.textContent.split("\n").map(ligne => Array.from(ligne, signe => Math.max(0, RAMPE.indexOf(signe))));
+    const colonnes = Math.max(...modele.map(ligne => ligne.length));
+    let tete = 0, fige = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function dessiner() {
+      trame.textContent = modele.map(ligne => ligne.map((niveau, x) => {
+        const ecart = Math.abs(x - tete);
+        let n = niveau + (ecart < 1 ? 3 : ecart < 2 ? 2 : ecart < 3 ? 1 : 0);
+        if (Math.random() < 0.012) n += Math.random() < 0.5 ? 1 : -1;
+        return RAMPE[Math.min(RAMPE.length - 1, Math.max(0, n))];
+      }).join("")).join("\n");
+    }
+    function battre() {
+      if (fige) return;
+      const enLecture = lecteurs.some(l => !l.audio.paused);
+      tete = (tete + (enLecture ? 1 : 0.5)) % (colonnes + 6);
+      dessiner();
+    }
+    setInterval(battre, 110);
+    boutonFiger.addEventListener("click", () => {
+      fige = !fige;
+      boutonFiger.textContent = fige ? "Relancer le fond" : "Figer le fond";
+    });
+    boutonFiger.textContent = fige ? "Relancer le fond" : "Figer le fond";
+  </script>
+</body>
+</html>
