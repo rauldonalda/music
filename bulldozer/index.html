@@ -6,10 +6,15 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preload" as="image" href="bulldozer-bg.jpg">
+  <link rel="preload" as="image" href="normal.jpg">
   <title>BULLDOZER — Rolland Auda</title>
   <style>
-    html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#000; }
-    #root { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; }
+    /* couleur d'attente : la teinte moyenne du bois, le temps que l'image arrive */
+    html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#908677; }
+    /* l'image s'affiche fixe dès qu'elle est chargée ; le fond animé vient se poser dessus ensuite */
+    #root { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0;
+            background:linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1)), url("bulldozer-bg.jpg") center / cover no-repeat; }
     .content { position:relative; z-index:10; color:#2e2018; padding:2rem;
                font-family:'Helvetica Neue', sans-serif; text-shadow:0 0 22px rgba(255,255,255,.3); }
     h1 { font-size:clamp(48px,10vw,200px); margin:0; letter-spacing:-0.02em; color:#4d3828; }
@@ -96,8 +101,7 @@
     <button type="button" id="b-figer">Figer l'image</button>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.2/pixi.min.js"
-          integrity="sha384-9WS3G5cT96SWNIkXeH4ncD0tfi+xpw9qBfT0A9SQuKtBrVemEhLpGs3QA9pbUt4t" crossorigin="anonymous"></script>
+  <script src="pixi.min.js"></script>
   <script src="background.js"></script>
 </body>
 </html>

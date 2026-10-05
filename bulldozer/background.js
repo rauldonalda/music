@@ -16,7 +16,7 @@ const options = {
 const dm = options.displacementMap;
 
 let ww = window.innerWidth, wh = window.innerHeight;
-const renderer = new PIXI.autoDetectRenderer({ width: ww, height: wh });
+const renderer = new PIXI.autoDetectRenderer({ width: ww, height: wh, transparent: true });   // transparent : l'image fixe reste visible tant que le fond animé n'est pas prêt
 document.querySelector("#root").appendChild(renderer.view);
 const stage = new PIXI.Container();
 
@@ -93,7 +93,7 @@ const lisse = (f, dt) => 1 - Math.pow(1 - f, dt);   // même inertie quelle que 
 
 const ticker = new PIXI.ticker.Ticker();
 ticker.add(deltaTime => {
-  if (fige) { renderer.render(stage); return; }
+  if (fige) return;   // image figée : on ne redessine plus rien
   const dt = Math.min(deltaTime, 3);
   const diffX = currentX - oldX, diffY = currentY - oldY;
 
@@ -129,6 +129,7 @@ window.addEventListener("resize", () => {
   ww = window.innerWidth; wh = window.innerHeight;
   renderer.resize(ww, wh);
   if (bg) coverBg();
+  renderer.render(stage);
 });
 
 // --- Réglages offerts au visiteur ---
