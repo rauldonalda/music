@@ -16,7 +16,8 @@
     #gravure { position: sticky; top: 0; flex: 1 1 0; min-width: 0; height: 100vh; margin: 0; }
     #gravure img { display: block; width: 100%; height: 100%; object-fit: contain; }
     #gravure canvas { position: absolute; }   /* le dessin animé se pose exactement sur l'image fixe */
-    #gravure figcaption { position: absolute; z-index: 1; left: 1.2rem; bottom: 3.3rem; font-size: 11px; color: #777; }
+    #gravure figcaption { position: absolute; z-index: 1; left: 1rem; bottom: 3.3rem; font-size: 11px; color: #777;
+                          background: rgba(255,255,255,.88); padding: .15em .35em; }   /* lisible même posée sur le dessin */
     #b-figer { right: auto; left: 1rem; }
     main { flex: 0 1 37rem; min-width: 0; max-width: 37rem; margin: 0 clamp(0rem, 5vw, 5rem) 0 0;
            padding-top: clamp(1rem, 4vh, 2.5rem); padding-bottom: 3rem; }
@@ -37,7 +38,7 @@
       body { display: block; }
       #gravure { position: relative; height: auto; }
       #gravure img { height: auto; max-height: 70vh; }
-      #gravure figcaption { position: static; padding: 0 1.5rem; }
+      #gravure figcaption { position: static; padding: 0 1.5rem; background: none; }
       #b-figer { left: auto; right: 1rem; }
       main { max-width: none; margin: 0; padding-bottom: 5rem; }
     }
